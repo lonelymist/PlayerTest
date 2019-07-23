@@ -15,8 +15,11 @@ public class Player : MonoBehaviour
     public bool OnAction = false;
     public Collider Sword;
     public bool CheckCombo;
+    public bool isDead;
+    public float PlayerHP=10;
     void Update()
     {
+ 
         if (!LookTarget)
         {
             CamPos.transform.position = transform.position;
@@ -58,9 +61,21 @@ public class Player : MonoBehaviour
             {
                 LookTarget = false;
             }
-            if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+            if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0 )
             {
-                animator.SetBool("isWalking", true);
+         
+                if (Input.GetAxis("Horizontal") == 0)
+                {
+                    animator.SetBool("isWalking", true);
+                    animator.SetBool("IsWalkingTarget", false);
+
+                }
+                if (Input.GetAxis("Horizontal") != 0)
+                {
+                    animator.SetBool("IsWalkingTarget", true);
+                    animator.SetFloat("Walkx", Input.GetAxis("Horizontal"));
+                    
+                }
                 Dodge();
                 if (!OnAction)
                 {
@@ -72,6 +87,8 @@ public class Player : MonoBehaviour
             else
             {
                 animator.SetBool("isWalking", false);
+                animator.SetBool("IsWalkingTarget", false);
+
             }
         }
         if (Input.GetKeyDown(KeyCode.Z) && OnAction == false)
@@ -87,6 +104,22 @@ public class Player : MonoBehaviour
                 animator.SetBool("NoCombo",false);
                 CheckCombo = false;
             }
+        }
+
+        Hurt();
+        Dead();
+
+        if (Input.GetKey(KeyCode.R))
+        {
+            animator.SetBool("IsHurt", true);
+            PlayerHP = PlayerHP - 0.1f;
+        }
+        if (PlayerHP <= 0)
+        {
+            PlayerHP = 0;
+            isDead = true;
+            OnAction = true;
+
         }
     }
     private void Dodge()
@@ -130,5 +163,18 @@ public class Player : MonoBehaviour
     public void Weapon()
     {
         Sword.isTrigger = false;
+    }
+    public void Dead()
+    {
+        if (isDead == true)
+        {
+            animator.SetBool("IsDead", true);
+        }
+    }
+    public void Hurt()
+    {
+     
+            animator.SetBool("IsHurt", false);
+        
     }
 }
