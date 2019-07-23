@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     public bool OnAction = false;
     public Collider Sword;
     public bool CheckCombo;
+    public bool CheckHeavyCombo;
     public bool isDead;
     public float PlayerHP=10;
     void Update()
@@ -91,23 +92,40 @@ public class Player : MonoBehaviour
 
             }
         }
-        if (Input.GetKeyDown(KeyCode.Z) && OnAction == false)
+       
+       
+        if (Input.GetMouseButtonDown(0) && OnAction == false )
         {
             OnAction = true;
             Sword.isTrigger = true;
             animator.SetBool("LightAttack",true);
         }
+        if (Input.GetMouseButtonDown(1) && OnAction == false)
+        {
+            OnAction = true;
+            Sword.isTrigger = true;
+            animator.SetBool("HeavyAttack", true);
+        }
         if (CheckCombo)
         {
-            if (Input.GetKeyDown(KeyCode.Z))
+            if (Input.GetMouseButtonDown(0))
             {
                 animator.SetBool("NoCombo",false);
                 CheckCombo = false;
+            }           
+        }
+        if (CheckHeavyCombo)
+        {
+            if (Input.GetMouseButtonDown(1))
+            {
+                animator.SetBool("NoCombo", false);
+                CheckHeavyCombo = false;
             }
         }
 
         Hurt();
         Dead();
+
 
         if (Input.GetKey(KeyCode.R))
         {
@@ -122,9 +140,10 @@ public class Player : MonoBehaviour
 
         }
     }
+
     private void Dodge()
     {
-        if (Input.GetKeyDown(KeyCode.D) && !OnAction)
+        if (Input.GetKeyDown(KeyCode.Space) && !OnAction)
         {
             OnAction = true;
             animator.SetFloat("x", Input.GetAxis("Horizontal"));
@@ -146,9 +165,23 @@ public class Player : MonoBehaviour
         animator.SetBool("LightAttack", false);
         CheckCombo = true;
     }
+    public void CheckHeavyComboStart()
+    {
+        animator.SetBool("HeavyAttack", false);
+        CheckHeavyCombo = true; 
+    }
+    public void CheckHeavyComboEnd()
+    {
+        if(CheckHeavyCombo == true)
+        {
+            CheckHeavyCombo = false;
+            animator.SetBool("NoCombo", true);
+            OnAction = false;
+        }
+    }
     public void CheckComboEnd()
     {
-        if(CheckCombo == true)
+        if (CheckCombo == true)
         {
             CheckCombo = false;
             animator.SetBool("NoCombo", true);
@@ -159,6 +192,7 @@ public class Player : MonoBehaviour
     {
         animator.SetBool("NoCombo", true);
         animator.SetBool("LightAttack", false);
+        animator.SetBool("HeavyAttack", false);
     }
     public void Weapon()
     {
