@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
     public bool CheckHeavyCombo;
     public float PlayerHP;
     public float PlayerSP;
+    public bool CountSp;
+    public SpUI spui;
     void Update()
     {
         if (!LookTarget)
@@ -93,32 +95,42 @@ public class Player : MonoBehaviour
         }
        
        
-        if (Input.GetMouseButtonDown(0) && OnAction == false && PlayerSP>=40)
+        if (Input.GetMouseButtonDown(0) && OnAction == false && PlayerSP >= 40)
         {
+            CheckCombo = false;
+            PlayerSP -= 40;
             OnAction = true;
             Sword.isTrigger = true;
             animator.SetBool("LightAttack",true);
+            spui.CoSp();
         }
         if (Input.GetMouseButtonDown(1) && OnAction == false && PlayerSP >= 40)
         {
+            CheckCombo = false;
+            PlayerSP -= 40;
             OnAction = true;
             Sword.isTrigger = true;
             animator.SetBool("HeavyAttack", true);
+            spui.CoSp();
         }
         if (CheckCombo)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && PlayerSP >= 40)
             {
+                PlayerSP -= 40;
                 animator.SetBool("NoCombo",false);
                 CheckCombo = false;
+                spui.CoSp();
             }           
         }
         if (CheckHeavyCombo)
         {
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(1) && PlayerSP >= 40)
             {
+                PlayerSP -= 40;
                 animator.SetBool("NoCombo", false);
                 CheckHeavyCombo = false;
+                spui.CoSp();
             }
         }
     }
@@ -127,10 +139,12 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && !OnAction && PlayerSP >= 40)
         {
+            PlayerSP -= 40;
             OnAction = true;
             animator.SetFloat("x", Input.GetAxis("Horizontal"));
             animator.SetFloat("y", Input.GetAxis("Vertical"));
             animator.SetTrigger("Dodge");
+            spui.CoSp();
         }
     }
     public void notOnAction()
@@ -151,6 +165,7 @@ public class Player : MonoBehaviour
     {
         animator.SetBool("HeavyAttack", false);
         CheckHeavyCombo = true;
+        CountSp = true;
     }
     public void CheckHeavyComboEnd()
     {

@@ -23,13 +23,6 @@ public class SpUI : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && SPHealthBar.sizeDelta.x >= 40 && !playerSP.OnAction || Input.GetMouseButtonDown(0) && SPHealthBar.sizeDelta.x >= 40|| Input.GetMouseButtonDown(1) && SPHealthBar.sizeDelta.x >= 40)
-        {
-           
-            SPHealthBar.sizeDelta -= SPBar;
-            playerSP.PlayerSP -= SPSpeed;
-            StartSP = false;
-        }
         if (SPHurtBar.sizeDelta.x > SPHealthBar.sizeDelta.x)
         {
             SPHurtBar.sizeDelta -= SPSlowBar * 2;
@@ -60,5 +53,10 @@ public class SpUI : MonoBehaviour
             playerSP.PlayerSP = 0;
             
         }
+    }
+    public void CoSp()
+    {
+        SPHealthBar.sizeDelta -= SPBar;
+        StartSP = false;
     }
 }
