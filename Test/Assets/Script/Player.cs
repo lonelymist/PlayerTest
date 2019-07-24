@@ -16,11 +16,9 @@ public class Player : MonoBehaviour
     public Collider Sword;
     public bool CheckCombo;
     public bool CheckHeavyCombo;
-    public bool isDead;
-    public float PlayerHP=10;
+    public float PlayerHP;
     void Update()
     {
- 
         if (!LookTarget)
         {
             CamPos.transform.position = transform.position;
@@ -122,23 +120,6 @@ public class Player : MonoBehaviour
                 CheckHeavyCombo = false;
             }
         }
-
-        Hurt();
-        Dead();
-
-
-        if (Input.GetKey(KeyCode.R))
-        {
-            animator.SetBool("IsHurt", true);
-            PlayerHP = PlayerHP - 0.1f;
-        }
-        if (PlayerHP <= 0)
-        {
-            PlayerHP = 0;
-            isDead = true;
-            OnAction = true;
-
-        }
     }
 
     private void Dodge()
@@ -168,7 +149,7 @@ public class Player : MonoBehaviour
     public void CheckHeavyComboStart()
     {
         animator.SetBool("HeavyAttack", false);
-        CheckHeavyCombo = true; 
+        CheckHeavyCombo = true;
     }
     public void CheckHeavyComboEnd()
     {
@@ -200,15 +181,15 @@ public class Player : MonoBehaviour
     }
     public void Dead()
     {
-        if (isDead == true)
-        {
-            animator.SetBool("IsDead", true);
-        }
+        OnAction = true;
+        animator.SetBool("IsDead", true);
+    }
+    public void GetHit()
+    {
+        animator.SetBool("IsHurt", true);
     }
     public void Hurt()
     {
-     
-            animator.SetBool("IsHurt", false);
-        
+        animator.SetBool("IsHurt", false);
     }
 }

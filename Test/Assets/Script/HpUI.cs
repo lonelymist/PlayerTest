@@ -12,27 +12,32 @@ public class HpUI : MonoBehaviour
     private Vector2 iniBar;
     private Vector2 zero;
     private bool StartHealth;
+    public Player player;
     void Start()
     {
         iniBar = new Vector2(maxHealth, HealthBar.sizeDelta.y);
         SlowBar = new Vector2(Time.deltaTime * HpSpeed, 0);
         zero = new Vector2(0, HealthBar.sizeDelta.y);
         HpBar = new Vector2(HpSpeed, 0);
+        player.PlayerHP = maxHealth;
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.H) && HealthBar.sizeDelta.x > 0)
+        if (Input.GetKeyDown(KeyCode.R) && HealthBar.sizeDelta.x > 0)
         {
+            player.GetHit();
             HealthBar.sizeDelta -= HpBar;
+            player.PlayerHP -= HpSpeed;
             StartHealth = false;
         }
         if (HurtBar.sizeDelta.x > HealthBar.sizeDelta.x)
         {
             HurtBar.sizeDelta -= SlowBar * 2;
         }
-        else if(HurtBar.sizeDelta.x < HealthBar.sizeDelta.x)
+        else if(HurtBar.sizeDelta.x <= HealthBar.sizeDelta.x)
         {
             HurtBar.sizeDelta = HealthBar.sizeDelta;
+            player.PlayerHP = HealthBar.sizeDelta.x;
             StartHealth = true;
         }
         if (HealthBar.sizeDelta.x > 0)
@@ -40,6 +45,7 @@ public class HpUI : MonoBehaviour
             if (HealthBar.sizeDelta.x < maxHealth && StartHealth)
             {
                 HealthBar.sizeDelta += SlowBar;
+                player.PlayerHP = HealthBar.sizeDelta.x;
             }
             else if (HealthBar.sizeDelta.x > maxHealth)
             {
@@ -47,9 +53,11 @@ public class HpUI : MonoBehaviour
                 StartHealth = false;
             }
         }
-        else if(HealthBar.sizeDelta.x < 0)
+        else if(HealthBar.sizeDelta.x <= 0)
         {
             HealthBar.sizeDelta = zero;
+            player.PlayerHP = 0;
+            player.Dead();
         }
     }
 }

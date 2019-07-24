@@ -193,16 +193,16 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.073417716
-        functionName: notOnAction
+      - time: 0
+        functionName: Weapon
         data: 
         objectReferenceParameter: {fileID: 100138, guid: 6987cf2b9fabde3479c978d7ab1150a9,
           type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.15696202
-        functionName: Weapon
+      - time: 0.073417716
+        functionName: notOnAction
         data: 
         objectReferenceParameter: {fileID: 100138, guid: 6987cf2b9fabde3479c978d7ab1150a9,
           type: 3}

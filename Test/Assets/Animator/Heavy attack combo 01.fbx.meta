@@ -173,7 +173,7 @@ ModelImporter:
       name: Heavy attack combo 01
       takeName: mixamo.com
       firstFrame: 0
-      lastFrame: 72
+      lastFrame: 58
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -193,7 +193,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.2218543
+      - time: 0.5582015
         functionName: CheckHeavyComboStart
         data: 
         objectReferenceParameter: {fileID: 100138, guid: 6987cf2b9fabde3479c978d7ab1150a9,
@@ -201,7 +201,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.6062026
+      - time: 0.8318264
         functionName: CheckHeavyComboEnd
         data: 
         objectReferenceParameter: {fileID: 100138, guid: 6987cf2b9fabde3479c978d7ab1150a9,

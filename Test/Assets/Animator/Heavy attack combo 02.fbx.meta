@@ -173,7 +173,7 @@ ModelImporter:
       name: Heavy attack combo 02
       takeName: mixamo.com
       firstFrame: 1
-      lastFrame: 70
+      lastFrame: 55
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
