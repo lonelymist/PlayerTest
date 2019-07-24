@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     public bool CheckCombo;
     public bool CheckHeavyCombo;
     public float PlayerHP;
+    public float PlayerSP;
     void Update()
     {
         if (!LookTarget)
@@ -92,13 +93,13 @@ public class Player : MonoBehaviour
         }
        
        
-        if (Input.GetMouseButtonDown(0) && OnAction == false )
+        if (Input.GetMouseButtonDown(0) && OnAction == false && PlayerSP>=40)
         {
             OnAction = true;
             Sword.isTrigger = true;
             animator.SetBool("LightAttack",true);
         }
-        if (Input.GetMouseButtonDown(1) && OnAction == false)
+        if (Input.GetMouseButtonDown(1) && OnAction == false && PlayerSP >= 40)
         {
             OnAction = true;
             Sword.isTrigger = true;
@@ -124,7 +125,7 @@ public class Player : MonoBehaviour
 
     private void Dodge()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !OnAction)
+        if (Input.GetKeyDown(KeyCode.Space) && !OnAction && PlayerSP >= 40)
         {
             OnAction = true;
             animator.SetFloat("x", Input.GetAxis("Horizontal"));
