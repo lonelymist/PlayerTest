@@ -5,9 +5,9 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [Header("Player")]
-    public Transform Target;
+    public GameObject Player;
     [Header("Enemy")]
-    public Transform SubTarget;
+    public GameObject SubTarget;
     [Header("parameter")]
     public float xSpeed;
     public float ySpeed;
@@ -17,63 +17,42 @@ public class CameraController : MonoBehaviour
     public float maxDistance;
     [Header("Observation")]
     public float x;
-    public float y;
+    //public float y;
 
     private Quaternion rotationEuler;
     private Vector3 cameraPosition;
-    private GameObject CameraDir;
-
-    private void Awake()
-    {
-        CameraDir = new GameObject();
-        CameraDir.transform.position = Target.position;
-        CameraDir.transform.SetParent(this.transform);
-        CameraDir.name = "CameraDir";
-    }
-
-    // Update is called once per frame
+    
     void LateUpdate()
     {
-        CameraDir.transform.position = Target.position;
+        transform.position = Player.transform.position;
         if (Input.GetKeyDown(KeyCode.L))
         {
-            Lock(GameObject.Find("target").transform);
+            Lock(GameObject.Find("target"));
         }
-        if (SubTarget == null) //一般模式
+        if (SubTarget == null)
         {
-            //Getting Axis of mouse
             x += Input.GetAxis("Mouse X") * xSpeed * Time.deltaTime;
-
         }
-        else //鎖定模式
+        else
         {
-            Vector3 EnemyVector = SubTarget.position - Target.position;
+            Vector3 EnemyVector = SubTarget.transform.position - Player.transform.position;
             x = Vector3.SignedAngle(Vector3.forward, EnemyVector, Vector3.up);
         }
 
-        y -= Input.GetAxis("Mouse Y") * xSpeed * Time.deltaTime;
-        //0~360 degrees
+        //y -= Input.GetAxis("Mouse Y") * xSpeed * Time.deltaTime;
         if (x > 360)
             x -= 360;
         else if (x < 0)
             x += 360;
-
-        //transform
         distance -= Input.GetAxis("Mouse ScrollWheel") * disSpeed * Time.deltaTime;
         distance = Mathf.Clamp(distance, minDistance, maxDistance);
-        //distance = GameObject.Find("Player").transform.localScale.y * 15;
-
-        /*this.transform.RotateAround(Target.transform.position, Target.transform.up, x);
-        this.transform.RotateAround(Target.transform.position, Target.transform.right, y);*/
-
-        rotationEuler = Quaternion.Euler(y, x, 0);
-        cameraPosition = rotationEuler * new Vector3(0, 0, -distance) + Target.position;
-
+        rotationEuler = Quaternion.Euler(0, x, 0);
+        //rotationEuler = Quaternion.Euler(y, x, 0);
+        cameraPosition = rotationEuler * new Vector3(0, 0, -distance) + Player.transform.position;
         transform.rotation = rotationEuler;
         transform.position = cameraPosition;
     }
-
-    private void Lock(Transform LockedObject)
+    private void Lock(GameObject LockedObject)
     {
         if (SubTarget == null)
         {

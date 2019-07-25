@@ -4,27 +4,40 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [Header("移動速度")]
     public float Speed;
-    public float RotateSpeed;
+    [Header("有沒有鎖定")]
     public bool LookTarget;
+    [Header("目標")]
     public GameObject Target;
+    [Header("目前鎖定距離倍率")]
     public float dis;
+    [Header("鎖定距離標準")]
     public float DistanceOffset;
+    [Header("開麥拉")]
+    public GameObject Cam;
+    [Header("動畫")]
     public Animator animator;
-    public GameObject CamPos;
+    [Header("有沒有做動作")]
     public bool OnAction = false;
+    [Header("打擊判定")]
     public Collider Sword;
+    [Header("輕攻擊COMBO")]
     public bool CheckCombo;
+    [Header("重攻擊COMBO")]
     public bool CheckHeavyCombo;
+    [Header("血量")]
     public float PlayerHP;
+    [Header("耐力條")]
     public float PlayerSP;
+    [Header("可不可以回復SP")]
     public bool CountSp;
+    [Header("SPUI")]
     public SpUI spui;
     void Update()
     {
         if (!LookTarget)
         {
-            CamPos.transform.position = transform.position;
             if (Input.GetKeyDown(KeyCode.L))
             {
                 DistanceOffset = Vector3.Distance(Target.transform.position, transform.position);
@@ -36,6 +49,7 @@ public class Player : MonoBehaviour
                 Dodge();
                 if (!OnAction)
                 {
+                    transform.rotation = Cam.transform.rotation;
                     transform.Translate(Input.GetAxis("Horizontal") * Speed * Time.deltaTime, 0, Input.GetAxis("Vertical") * Speed * Time.deltaTime);
                 }
             }
@@ -43,41 +57,20 @@ public class Player : MonoBehaviour
             {
                 animator.SetBool("isWalking", false);
             }
-            if (Input.GetKey(KeyCode.Q))
-            {
-                transform.Rotate(0, -RotateSpeed * Time.deltaTime, 0);
-                CamPos.transform.Rotate(0, -RotateSpeed * Time.deltaTime, 0);
-            }
-            if (Input.GetKey(KeyCode.E))
-            {
-                transform.Rotate(0, RotateSpeed * Time.deltaTime, 0);
-                CamPos.transform.Rotate(0, RotateSpeed * Time.deltaTime, 0);
-            }
         }
         else if (LookTarget)
         {
-            CamPos.transform.position = transform.position;
-            CamPos.transform.LookAt(Target.transform.position);
             dis = DistanceOffset / Vector3.Distance(Target.transform.position, transform.position);
             if (Input.GetKeyDown(KeyCode.L))
             {
+                animator.SetBool("IsWalkingTarget", false);
                 LookTarget = false;
             }
-            if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0 )
+            else if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0 )
             {
-         
-                if (Input.GetAxis("Horizontal") == 0)
-                {
-                    animator.SetBool("isWalking", true);
-                    animator.SetBool("IsWalkingTarget", false);
-
-                }
-                if (Input.GetAxis("Horizontal") != 0)
-                {
-                    animator.SetBool("IsWalkingTarget", true);
-                    animator.SetFloat("Walkx", Input.GetAxis("Horizontal"));
-                    
-                }
+                animator.SetBool("isWalking", true);
+                animator.SetBool("IsWalkingTarget", true);
+                animator.SetFloat("Walkx", Input.GetAxis("Horizontal"));
                 Dodge();
                 if (!OnAction)
                 {
