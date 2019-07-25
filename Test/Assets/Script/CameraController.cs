@@ -48,7 +48,7 @@ public class CameraController : MonoBehaviour
         }
         else
         {
-            //等於目標跟玩家的方向
+            //等於目標跟玩家的方向 
             Vector3 EnemyVector = SubTarget.transform.position - Player.transform.position;
             //用兩個方向求得其中間角度
             //Vector3.up=(0,1,0)

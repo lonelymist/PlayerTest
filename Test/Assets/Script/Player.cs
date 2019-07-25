@@ -31,8 +31,6 @@ public class Player : MonoBehaviour
     public float PlayerHP;
     [Header("耐力條")]
     public float PlayerSP;
-    [Header("可不可以回復SP")]
-    public bool CountSp;
     [Header("SPUI")]
     public SpUI spui;
     void Update()
@@ -62,9 +60,13 @@ public class Player : MonoBehaviour
                     //鎖定Y軸
                     Cam.transform.eulerAngles = new Vector3(0, Cam.transform.eulerAngles.y, 0);
                     //抓取四個象限得方向
-                    float MoveX = Input.GetAxis("Vertical") * Cam.transform.forward.x + Input.GetAxis("Horizontal") * Cam.transform.right.x;
-                    float MoveZ = Input.GetAxis("Vertical") * Cam.transform.forward.z + Input.GetAxis("Horizontal") * Cam.transform.right.z;
-                    Vector3 Dir = new Vector3(MoveX, 0, MoveZ);
+                    float MoveX;
+                    float MoveZ;
+                    Vector3 Dir;
+
+                    MoveX = Input.GetAxis("Vertical") * Cam.transform.forward.x + Input.GetAxis("Horizontal") * Cam.transform.forward.z;
+                    MoveZ = Input.GetAxis("Vertical") * Cam.transform.forward.z + Input.GetAxis("Horizontal") * Cam.transform.forward.x;
+                    Dir = new Vector3(MoveX, 0, MoveZ);
                     transform.LookAt(transform.position + Dir);
                     transform.position = Vector3.Lerp(transform.position, transform.position + Dir, Speed * Time.deltaTime);
                 }
@@ -227,7 +229,7 @@ public class Player : MonoBehaviour
         animator.SetBool("LightAttack", false);
         //開始檢查是否有下一個連擊
         CheckCombo = true;
-        CountSp = true;
+       
 
     } 
     //確認重攻擊連擊開始
@@ -237,8 +239,7 @@ public class Player : MonoBehaviour
         animator.SetBool("HeavyAttack", false);
         //開始檢查是否有下一個連擊
         CheckHeavyCombo = true;
-        //是否可以回復SP
-        CountSp = true;
+
     }
     //確認重攻擊結束
     public void CheckHeavyComboEnd()
