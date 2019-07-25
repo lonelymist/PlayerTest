@@ -20,6 +20,8 @@ public class CameraController : MonoBehaviour
     public float minDistance;
     //視窗最遠距離
     public float maxDistance;
+    //最大仰角
+    public float maxY;
     [Header("Observation")]
     //角度
     public float x;
@@ -61,6 +63,10 @@ public class CameraController : MonoBehaviour
             x -= 360;
         else if (x < 0)
             x += 360;
+        if (y > maxY)
+            y = maxY;
+        else if (y < -maxY)
+            y = -maxY;
         //攝影機跟玩家的距離依造滾輪得輸入做距離增減
         distance -= Input.GetAxis("Mouse ScrollWheel") * disSpeed * Time.deltaTime;
         //攝影機跟玩家的距離限定在minDistance, maxDistance之間

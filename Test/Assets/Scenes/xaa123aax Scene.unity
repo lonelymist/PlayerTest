@@ -282,6 +282,7 @@ MonoBehaviour:
   disSpeed: 100
   minDistance: 1
   maxDistance: 3
+  maxY: 30
   x: 0
   y: 0
 --- !u!1 &158259871
@@ -1691,7 +1692,6 @@ MonoBehaviour:
   CheckHeavyCombo: 0
   PlayerHP: 400
   PlayerSP: 400
-  CountSp: 0
   spui: {fileID: 172469381}
 --- !u!136 &1200819300
 CapsuleCollider:

@@ -138,7 +138,7 @@ public class Player : MonoBehaviour
             spui.CoSp();
         }
         //按下右鍵且沒其他動作且sp>=40
-        if (Input.GetMouseButtonDown(1) && OnAction == false && PlayerSP >= 40)
+        else if (Input.GetMouseButtonDown(1) && OnAction == false && PlayerSP >= 40)
         {
             //結束確認是否有combo
             CheckHeavyCombo = false;
