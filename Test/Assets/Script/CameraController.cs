@@ -17,7 +17,7 @@ public class CameraController : MonoBehaviour
     public float maxDistance;
     [Header("Observation")]
     public float x;
-    //public float y;
+    public float y;
 
     private Quaternion rotationEuler;
     private Vector3 cameraPosition;
@@ -39,15 +39,14 @@ public class CameraController : MonoBehaviour
             x = Vector3.SignedAngle(Vector3.forward, EnemyVector, Vector3.up);
         }
 
-        //y -= Input.GetAxis("Mouse Y") * xSpeed * Time.deltaTime;
+        y -= Input.GetAxis("Mouse Y") * xSpeed * Time.deltaTime;
         if (x > 360)
             x -= 360;
         else if (x < 0)
             x += 360;
         distance -= Input.GetAxis("Mouse ScrollWheel") * disSpeed * Time.deltaTime;
         distance = Mathf.Clamp(distance, minDistance, maxDistance);
-        rotationEuler = Quaternion.Euler(0, x, 0);
-        //rotationEuler = Quaternion.Euler(y, x, 0);
+        rotationEuler = Quaternion.Euler(y, x, 0);
         cameraPosition = rotationEuler * new Vector3(0, 0, -distance) + Player.transform.position;
         transform.rotation = rotationEuler;
         transform.position = cameraPosition;

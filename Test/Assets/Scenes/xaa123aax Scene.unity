@@ -283,6 +283,7 @@ MonoBehaviour:
   minDistance: 1
   maxDistance: 3
   x: 0
+  y: 0
 --- !u!1 &158259871
 GameObject:
   m_ObjectHideFlags: 0
@@ -1682,6 +1683,7 @@ MonoBehaviour:
   dis: 0
   DistanceOffset: 0
   Cam: {fileID: 157599779}
+  CamScript: {fileID: 157599781}
   animator: {fileID: 1200819298}
   OnAction: 0
   Sword: {fileID: 165137106}

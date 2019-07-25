@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     public float DistanceOffset;
     [Header("開麥拉")]
     public GameObject Cam;
+    public CameraController CamScript;
     [Header("動畫")]
     public Animator animator;
     [Header("有沒有做動作")]
@@ -49,7 +50,7 @@ public class Player : MonoBehaviour
                 Dodge();
                 if (!OnAction)
                 {
-                    transform.rotation = Cam.transform.rotation;
+                    transform.rotation = Quaternion.Euler(0, CamScript.x, 0);
                     transform.Translate(Input.GetAxis("Horizontal") * Speed * Time.deltaTime, 0, Input.GetAxis("Vertical") * Speed * Time.deltaTime);
                 }
             }
