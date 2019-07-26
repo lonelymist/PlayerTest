@@ -5,11 +5,15 @@ using UnityEngine;
 public class HpUI : MonoBehaviour
 {
     //最大血量
-    public int maxHealth;
+    [Header("最大血量")]
+    [SerializeField]
+    private int maxHealth = 400;
     //設置一個有矩形的位置大小等訊息之物件
     public RectTransform HealthBar, HurtBar;
     //血量刷新量
-    public int HpSpeed;
+    [Header("血量刷新量")]
+    [SerializeField]
+    private int HpSpeed = 40;
     //根據hpspeed減少的血量
     private Vector2 HpBar;
     //比較慢的漸近血量

@@ -5,11 +5,15 @@ using UnityEngine;
 public class SpUI : MonoBehaviour
 {
     //最大sp
-    public int maxSP;
+    [Header("最大sp")]
+    [SerializeField]
+    private int maxSP = 400;
     //設置一個有矩形的位置大小等訊息之物件
     public RectTransform SPHealthBar, SPHurtBar;
     //耐力刷新量
-    public int SPSpeed;
+    [Header("耐力刷新量")]
+    [SerializeField]
+    private int SPSpeed = 40;
     //根據spspeed減少的血量
     private Vector2 SPBar;
     //比較慢的漸近sp

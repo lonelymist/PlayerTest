@@ -5,15 +5,16 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [Header("移動速度")]
-    public float Speed;
-    [Header("有沒有鎖定")]
-    public bool LookTarget;
+    [SerializeField]
+    private float Speed = 2;
     [Header("目標")]
     public GameObject Target;
     [Header("目前鎖定距離倍率")]
-    public float dis;
+    [SerializeField]
+    private float dis;
     [Header("鎖定距離標準")]
-    public float DistanceOffset;
+    [SerializeField]
+    private float DistanceOffset;
     [Header("開麥拉")]
     public GameObject Cam;
     public CameraController CamScript;
@@ -24,27 +25,33 @@ public class Player : MonoBehaviour
     [Header("打擊判定")]
     public Collider Sword;
     [Header("輕攻擊COMBO")]
-    public bool CheckCombo;
+    [SerializeField]
+    private bool CheckCombo;
     [Header("重攻擊COMBO")]
-    public bool CheckHeavyCombo;
+    [SerializeField]
+    private bool CheckHeavyCombo;
     [Header("血量")]
     public float PlayerHP;
     [Header("耐力條")]
     public float PlayerSP;
     [Header("SPUI")]
     public SpUI spui;
-    void Update()
+    void FixedUpdate()
     {
         //如果沒鎖定
-        if (!LookTarget)
+        if (Target == null)
         {
             //如果按下L
             if (Input.GetKeyDown(KeyCode.L))
             {
+                CamScript.DetectEnemy();
+                Target = CamScript.SubTarget;
                 //紀錄距離
-                DistanceOffset = Vector3.Distance(Target.transform.position, transform.position);
+                if(Target != null)
+                {
+                    DistanceOffset = Vector3.Distance(Target.transform.position, transform.position);
+                }
                 //變成鎖定
-                LookTarget = true;
             }
             //如果有水平垂直輸入
             if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
@@ -53,20 +60,18 @@ public class Player : MonoBehaviour
                 //有在走路
                 animator.SetBool("isWalking",true);
                 
+                //判斷有沒有閃避
                 Dodge();
+
                 //如果沒有其他動作
                 if (!OnAction)
                 {
                     //鎖定Y軸
-                    Cam.transform.eulerAngles = new Vector3(0, Cam.transform.eulerAngles.y, 0);
+                    Cam.transform.eulerAngles = new Vector3(Cam.transform.eulerAngles.x, Cam.transform.eulerAngles.y, 0);
                     //抓取四個象限得方向
-                    float MoveX;
-                    float MoveZ;
-                    Vector3 Dir;
-
-                    MoveX = Input.GetAxis("Vertical") * Cam.transform.forward.x + Input.GetAxis("Horizontal") * Cam.transform.forward.z;
-                    MoveZ = Input.GetAxis("Vertical") * Cam.transform.forward.z + Input.GetAxis("Horizontal") * Cam.transform.forward.x;
-                    Dir = new Vector3(MoveX, 0, MoveZ);
+                    float MoveX = Input.GetAxis("Vertical") * Cam.transform.forward.x + Input.GetAxis("Horizontal") * Cam.transform.right.x;
+                    float MoveZ = Input.GetAxis("Vertical") * Cam.transform.forward.z + Input.GetAxis("Horizontal") * Cam.transform.right.z;
+                    Vector3 Dir = new Vector3(MoveX, 0, MoveZ);
                     transform.LookAt(transform.position + Dir);
                     transform.position = Vector3.Lerp(transform.position, transform.position + Dir, Speed * Time.deltaTime);
                 }
@@ -78,17 +83,20 @@ public class Player : MonoBehaviour
             }
         }
         //鎖定
-        else if (LookTarget)
+        else if (Target != null)
         {
             //隨時跟新目標距離，計算跟原本的差距
             dis = DistanceOffset / Vector3.Distance(Target.transform.position, transform.position);
             //如果按下L
             if (Input.GetKeyDown(KeyCode.L))
             {
+                CamScript.inViewTarget.Clear();
+                CamScript.SpottedEnemies = null;
+                CamScript.SubTarget = null;
+                Target = null;
                 //沒有走路
                 animator.SetBool("IsWalkingTarget", false);
                 //鎖定無效
-                LookTarget = false;
             }
             //如果有水平或垂直輸入
             else if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0 )
@@ -187,7 +195,9 @@ public class Player : MonoBehaviour
             }
         }
     }
-    //設定閃避
+    /// <summary>
+    /// 閃避
+    /// </summary>
     private void Dodge()
     {
         //如果有空白鍵輸入且沒有其他動作且SP>=40
@@ -208,7 +218,9 @@ public class Player : MonoBehaviour
             spui.CoSp();
         }
     }
-    //如果沒有其他動作
+    /// <summary>
+    /// 沒有走路之外的動作
+    /// </summary>
     public void notOnAction()
     {
         //沒有其他動作
@@ -216,13 +228,17 @@ public class Player : MonoBehaviour
         //沒有連擊無效
         animator.SetBool("NoCombo", false);
     }
-    //攻擊結束
+    /// <summary>
+    /// 攻擊結束
+    /// </summary>
     public void attackEnd()
     {
         //把武器變回一般碰撞物件
         Sword.isTrigger = false;
     }
-    //確認輕攻擊連擊開始
+    /// <summary>
+    /// 輕攻擊連擊判定開始
+    /// </summary>
     public void CheckComboStart()
     {
         //輕攻擊關閉
@@ -231,8 +247,10 @@ public class Player : MonoBehaviour
         CheckCombo = true;
        
 
-    } 
-    //確認重攻擊連擊開始
+    }
+    /// <summary>
+    /// 重攻擊連擊判定開始
+    /// </summary>
     public void CheckHeavyComboStart()
     {
         //重攻擊關閉
@@ -241,7 +259,9 @@ public class Player : MonoBehaviour
         CheckHeavyCombo = true;
 
     }
-    //確認重攻擊結束
+    /// <summary>
+    /// 重攻擊判定結束
+    /// </summary>
     public void CheckHeavyComboEnd()
     {
         //如果確認沒被關閉
@@ -255,7 +275,9 @@ public class Player : MonoBehaviour
             OnAction = false;
         }
     }
-    //確認輕攻擊結束
+    /// <summary>
+    /// 輕攻擊判定結束
+    /// </summary>
     public void CheckComboEnd()
     {
         //如果確認沒被關閉
@@ -269,7 +291,9 @@ public class Player : MonoBehaviour
             OnAction = false;
         }
     }
-    //攻擊全體結束
+    /// <summary>
+    /// 攻擊都結束了
+    /// </summary>
     public void AllEnd()
     {
         //沒錯 沒有連擊
@@ -278,12 +302,17 @@ public class Player : MonoBehaviour
         animator.SetBool("LightAttack", false);
         animator.SetBool("HeavyAttack", false);
     }
+    /// <summary>
+    /// 武器變成沒有Trigger
+    /// </summary>
     public void Weapon()
     {
         //讓武器回到實體狀態
         Sword.isTrigger = false;
     }
-    //如果死了
+    /// <summary>
+    /// 死亡
+    /// </summary>
     public void Dead()
     {
         //目前有執行動作
@@ -291,13 +320,17 @@ public class Player : MonoBehaviour
         //玩家死亡
         animator.SetBool("IsDead", true);
     }
-    //如果受傷
+    /// <summary>
+    /// 受傷
+    /// </summary>
     public void GetHit()
     {
         //玩家受傷
         animator.SetBool("IsHurt", true);
     }
-    //受傷結束
+    /// <summary>
+    /// 受傷結束
+    /// </summary>
     public void Hurt()
     {
         //關閉

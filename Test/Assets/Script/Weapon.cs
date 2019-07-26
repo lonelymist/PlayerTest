@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-
     //如果武器碰到其他東西
     private void OnTriggerEnter(Collider other)
     {
