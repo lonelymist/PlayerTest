@@ -82,7 +82,9 @@ public class SpUI : MonoBehaviour
             
         }
     }
-    //扣sp
+    /// <summary>
+    /// 扣sp
+    /// </summary>
     public void CoSp()
     {
         SPHealthBar.sizeDelta -= SPBar;

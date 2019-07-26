@@ -85,6 +85,9 @@ public class CameraController : MonoBehaviour
         transform.rotation = rotationEuler;
         //transform.position = cameraPosition;
     }
+    /// <summary>
+    /// 偵測敵人
+    /// </summary>
     public void DetectEnemy()
     {
         int j = 0;

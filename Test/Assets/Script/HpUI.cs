@@ -48,6 +48,15 @@ public class HpUI : MonoBehaviour
             //開始回血關閉
             StartHealth = false;
         }
+        if (Input.GetKeyDown(KeyCode.T)&& HealthBar.sizeDelta.x == 0)
+        {
+
+            //回到原始血量
+            HealthBar.sizeDelta = iniBar;
+            player.Revive();
+            //開始回血關閉
+            StartHealth = true;
+        }
         //如果紅條>綠條
         if (HurtBar.sizeDelta.x > HealthBar.sizeDelta.x)
         {

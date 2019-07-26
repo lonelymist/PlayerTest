@@ -130,7 +130,7 @@ public class Player : MonoBehaviour
         }
        
        //按下左鍵且沒其他動作且sp>=40
-        if (Input.GetMouseButtonDown(0) && OnAction == false && PlayerSP >= 40)
+        if (Input.GetMouseButtonDown(0) && !OnAction && PlayerSP >= 40)
         {
             //結束確認是否有combo
             CheckCombo = false;
@@ -146,7 +146,7 @@ public class Player : MonoBehaviour
             spui.CoSp();
         }
         //按下右鍵且沒其他動作且sp>=40
-        else if (Input.GetMouseButtonDown(1) && OnAction == false && PlayerSP >= 40)
+        else if (Input.GetMouseButtonDown(1) && !OnAction && PlayerSP >= 40)
         {
             //結束確認是否有combo
             CheckHeavyCombo = false;
@@ -336,4 +336,12 @@ public class Player : MonoBehaviour
         //關閉
         animator.SetBool("IsHurt", false);
     }
+    public void Revive()
+    {
+       
+        animator.SetTrigger("Revive");
+        OnAction = false;
+    }
+
+
 }
